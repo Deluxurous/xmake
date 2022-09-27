@@ -638,7 +638,7 @@ function _build_for_msvc(package, configs, opt)
     os.vrunv(msbuild.program, {slnfile, "-nologo", "-t:Rebuild",
             (jobs ~= nil and format("-m:%d", jobs) or "-m"),
             "-p:Configuration=" .. (package:is_debug() and "Debug" or "Release"),
-            "-p:Platform=" .. (package:is_arch("x64") and "x64" or "Win32")}, {envs = runenvs})
+            "-p:Platform=" .. (package:is_arch64() and "x64" or "Win32")}, {envs = runenvs})
 end
 
 -- do build for make
@@ -703,7 +703,7 @@ function _install_for_msvc(package, configs, opt)
     os.vrunv(msbuild.program, {slnfile, "-nologo", "-t:Rebuild", "/nr:false",
         (jobs ~= nil and format("-m:%d", jobs) or "-m"),
         "-p:Configuration=" .. (package:is_debug() and "Debug" or "Release"),
-        "-p:Platform=" .. (package:is_arch("x64") and "x64" or "Win32")}, {envs = runenvs})
+        "-p:Platform=" .. (package:is_arch64() and "x64" or "Win32")}, {envs = runenvs})
     local projfile = os.isfile("INSTALL.vcxproj") and "INSTALL.vcxproj" or "INSTALL.vcproj"
     if os.isfile(projfile) then
         os.vrunv(msbuild.program, {projfile, "/property:configuration=" .. (package:is_debug() and "Debug" or "Release")}, {envs = runenvs})

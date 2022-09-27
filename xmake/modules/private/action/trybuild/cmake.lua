@@ -51,10 +51,10 @@ end
 -- get configs for windows
 function _get_configs_for_windows(configs)
     table.insert(configs, "-A")
-    if is_arch("x86", "i386") then
-        table.insert(configs, "Win32")
-    else
+    if is_arch64() then
         table.insert(configs, "x64")
+    else
+        table.insert(configs, "Win32")
     end
 end
 
@@ -251,7 +251,7 @@ function clean()
             if is_plat("windows") then
                 local runenvs = toolchain.load("msvc"):runenvs()
                 local msbuild = find_tool("msbuild", {envs = runenvs})
-                os.vexecv(msbuild.program, {configfile, "-nologo", "-t:Clean", "-p:Configuration=" .. (is_mode("debug") and "Debug" or "Release"), "-p:Platform=" .. (is_arch("x64") and "x64" or "Win32")}, {envs = runenvs})
+                os.vexecv(msbuild.program, {configfile, "-nologo", "-t:Clean", "-p:Configuration=" .. (is_mode("debug") and "Debug" or "Release"), "-p:Platform=" .. (is_arch64() and "x64" or "Win32")}, {envs = runenvs})
             else
                 os.vexec("make clean")
             end
@@ -282,7 +282,7 @@ function build()
         local runenvs = toolchain.load("msvc"):runenvs()
         local msbuild = find_tool("msbuild", {envs = runenvs})
         local slnfile = assert(find_file("*.sln", os.curdir()), "*.sln file not found!")
-        os.vexecv(msbuild.program, {slnfile, "-nologo", "-t:Build", "-m", "-p:Configuration=" .. (is_mode("debug") and "Debug" or "Release"), "-p:Platform=" .. (is_arch("x64") and "x64" or "Win32")}, {envs = runenvs})
+        os.vexecv(msbuild.program, {slnfile, "-nologo", "-t:Build", "-m", "-p:Configuration=" .. (is_mode("debug") and "Debug" or "Release"), "-p:Platform=" .. (is_arch64() and "x64" or "Win32")}, {envs = runenvs})
         local projfile = os.isfile("INSTALL.vcxproj") and "INSTALL.vcxproj" or "INSTALL.vcproj"
         if os.isfile(projfile) then
             os.vexecv(msbuild.program, {projfile, "/property:configuration=" .. (is_mode("debug") and "Debug" or "Release")}, {envs = runenvs})
