@@ -51,10 +51,10 @@ end
 -- get configs for windows
 function _get_configs_for_windows(configs)
     table.insert(configs, "-A")
-    if is_arch64() then
-        table.insert(configs, "x64")
-    else
+    if is_arch("x86", "i386") then
         table.insert(configs, "Win32")
+    else
+        table.insert(configs, "x64")
     end
 end
 

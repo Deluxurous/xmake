@@ -4,7 +4,6 @@
   </a>
 
   <h1>xmake</h1>
-
   <div>
     <a href="https://github.com/xmake-io/xmake/actions?query=workflow%3AWindows">
       <img src="https://img.shields.io/github/workflow/status/xmake-io/xmake/Windows/dev.svg?style=flat-square&logo=windows" alt="github-ci" />
